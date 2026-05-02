@@ -3,7 +3,7 @@ terraform {
       bucket = "tf-gha-state-amansrsnv"
       key = "practice/terraform.tfstate"
       region = "us-east-1"
-      dynamodb-table = "tf-gha-lock"
+      dynamodb_table = "tf-gha-lock"
       encrypt = true
     }
 }
