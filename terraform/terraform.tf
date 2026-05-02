@@ -15,5 +15,5 @@ provider "aws" {
 resource "aws_ssm_parameter" "practice" {
   name = "/gha-practice/message"
   type = "String"
-  value = "hello"
+  value = "hello from test branch"
 }

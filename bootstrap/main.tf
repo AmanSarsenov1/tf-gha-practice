@@ -64,7 +64,7 @@ resource "aws_iam_role_policy" "gha" {
       },
       {
         Effect   = "Allow"
-        Action   = ["ssm:PutParameter", "ssm:GetParameter", "ssm:DeleteParameter"]
+        Action   = ["ssm:PutParameter", "ssm:GetParameter", "ssm:DeleteParameter", "ssm:GetParameters","ssm:ListTagsForResource","ssm:AddTagsToResource", "ssm:DescribeParameters"]
         Resource = "*"
       }
     ]
