@@ -1,11 +1,14 @@
 terraform {
-    backend "s3" {
-      bucket = "tf-gha-state-amansrsnv13232121"
-      key = "practice/terraform.tfstate"
-      region = "us-east-1"
-      dynamodb_table = "tf-gha-lock"
-      encrypt = true
+  required_version = ">=1.6.0"
+
+  backend "s3" {}
+
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "->5.0"
     }
+  }
 }
 
 provider "aws" {
@@ -13,7 +16,7 @@ provider "aws" {
 }
 
 resource "aws_ssm_parameter" "practice" {
-  name = "/gha-practice/message"
+  name = "/gha-practice/${var.environment}/message"
   type = "String"
-  value = "hello from test branch"
+  value = var.ssm_value
 }
