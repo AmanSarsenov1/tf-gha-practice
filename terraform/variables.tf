@@ -1,7 +1,7 @@
 variable "ssm_value" {
-    type = String
+    type = string
 }
 
 variable "environment" {
-    type = String
+    type = string
 }
