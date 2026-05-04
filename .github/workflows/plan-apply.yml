@@ -3,8 +3,12 @@ name: Plan & apply
 on: 
   pull_request:
     branches: [main]
+    paths:
+      - "terraform/**"
   push:
     branches: [main]
+    paths: 
+      - "terraform/**"
 
 permissions:
   id-token: write
@@ -13,6 +17,10 @@ permissions:
 jobs:
   plan:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [dev, prod]
+
     steps:
       - uses: actions/checkout@v4
 
@@ -23,16 +31,30 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
 
-      - run: terraform init
+      - name: terraform init
         working-directory: terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=tf-gha-state-amansrsnv13232121" \
+            -backend-config="key=${{ matrix.env }}/terraform.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend-config="dynamodb_table=tf-gha-lock" \
+            -backend-config="encrypt=true"
 
-      - run: terraform plan
+      - name: terraform plan
         working-directory: terraform
+        run: terraform plan -var-file="envs/${{ matrix.env }}.tfvars"
 
   apply:
     runs-on: ubuntu-latest
     needs: plan
     if: github.event_name == 'push'
+    strategy:
+      matrix:
+        env: [dev, prod]
+    environment: ${{ matrix.env }}
+
+
     steps:
       - uses: actions/checkout@v4
 
@@ -43,10 +65,18 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v3
 
-      - run: terraform init
+      - name: terraform init
         working-directory: terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=tf-gha-state-amansrsnv132321321" \
+            -backend-config="key=${{ matrix.env }}/terraform.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend-config="dynamodb_table=tf-gha-lock" \
+            -backend-config="encrypt=true"
 
-      - run: terraform apply -auto-approve
+      - name: terraform apply -auto-approve
         working-directory: terraform
+        run: terraform apply -auto-approve -var-file="envs/${{ matrix.env }}.tfvars"
 
 
