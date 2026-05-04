@@ -35,7 +35,7 @@ jobs:
         working-directory: terraform
         run: |
           terraform init \
-            -backend-config="bucket=tf-gha-state-amansrsnv132321321" \
+            -backend-config="bucket=tf-gha-state-amansrsnv13232121" \
             -backend-config="key=${{ matrix.env }}/terraform.tfstate" \
             -backend-config="region=us-east-1" \
             -backend-config="dynamodb_table=tf-gha-lock" \
