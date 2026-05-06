@@ -5,3 +5,7 @@ variable "ssm_value" {
 variable "environment" {
     type = string
 }
+
+variable "ssm_value_new" {
+    type = string
+}

@@ -20,3 +20,9 @@ resource "aws_ssm_parameter" "practice" {
   type = "String"
   value = var.ssm_value
 }
+
+resource "aws_ssm_parameter" "new" {
+  name = "/gha-practice/new/message"
+  type = "String"
+  value = var.ssm_value_new
+}
